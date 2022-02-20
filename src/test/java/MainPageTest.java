@@ -8,7 +8,6 @@ import org.testng.annotations.Test;
 
 import java.util.concurrent.TimeUnit;
 
-
 public class MainPageTest {
     private WebDriver driver;
     private MainPage mainPage;
@@ -26,48 +25,58 @@ public class MainPageTest {
     @Test(description = "Page Title Test")
     public void checkPageTitle() {
         String title = driver.getTitle();
-        Assert.assertEquals(title, "І.UA - твоя пошта ");
+        Assert.assertEquals(title, Constants.text.EXPECTED_TEXT_1);
     }
 
     @Test(description = "Page URL Test")
     public void checkPageUrl() {
         String url = driver.getCurrentUrl();
-        Assert.assertEquals(url, "https://www.i.ua/");
+        Assert.assertEquals(url, Constants.urls.EXPECTED_HOME_PAGE_URL);
     }
 
+    @Test(description = "Page with Ukrainian Language Test")
+    public void checkPageLanguageUkr() {
+        mainPage.chooseUkrainianLanguage();
+        WebElement element01 = driver.findElement(By.xpath("//*[contains(text(),'Пошта')]"));
+        Assert.assertEquals(element01.getText(), Constants.text.EXPECTED_TEXT_10);
+    }
+
+    @Test(description = "Page with Russian Language Test")
+    public void checkPageLanguageRus() {
+        mainPage.chooseRussianLanguage();
+        WebElement element01 = driver.findElement(By.xpath("//*[contains(text(),'Почта')]"));
+        Assert.assertEquals(element01.getText(), Constants.text.EXPECTED_TEXT_11);
+    }
+    
     @Test(description = "Successful user login Test")
     public void checkValidLogInTest() {
-        mainPage.logInFromMainPage("tomcruise", "qwe123!");
+        mainPage.logInFromMainPage(Constants.credentials.USERNAME, Constants.credentials.PASSWORD);
         mainPage.clickSignInButton();
-        WebElement element01;
-        element01 = driver.findElement(By.xpath("//span[contains(text(),'tomcruise@i.ua')]"));
-        Assert.assertEquals(element01.getText(), "tomcruise@i.ua");
+        WebElement element01 = driver.findElement(By.xpath("//span[contains(text(),'tomcruise@i.ua')]"));
+        Assert.assertEquals(element01.getText(), Constants.text.EXPECTED_TEXT_2);
     }
 
     @Test(description = "Login with empty fields Test", priority = 1)
     public void loginWithEmptyFieldsTest() {
-        mainPage.logInFromMainPage("", "");
+        mainPage.logInFromMainPage(Constants.credentials.EMPTY_USERNAME, Constants.credentials.EMPTY_PASSWORD);
         String currentUrl = driver.getCurrentUrl();
-        Assert.assertEquals(currentUrl, "https://www.i.ua/");
+        Assert.assertEquals(currentUrl, Constants.urls.EXPECTED_HOME_PAGE_URL);
     }
 
     @Test(description = "Login with incorrect credentials Test", priority = 1)
     public void loginWithInvalidLoginTest() {
-        mainPage.logInFromMainPage("bradpitt", "12345");
+        mainPage.logInFromMainPage(Constants.credentials.INCORRECT_USERNAME, Constants.credentials.INCORRECT_PASSWORD);
         mainPage.clickSignInButton();
-        WebElement element02;
-        element02 = driver.findElement(By.xpath("//div[contains(text(),'Невірний логін або пароль')]"));
-        Assert.assertEquals(element02.getText(), "Невірний логін або пароль");
+        WebElement element01 = driver.findElement(By.xpath("//div[contains(text(),'Невірний логін або пароль')]"));
+        Assert.assertEquals(element01.getText(), Constants.text.EXPECTED_TEXT_3);
     }
 
-    @Test(description = "Login with incorrect password Test", priority = 1)
+    @Test(description = "Login with invalid password Test", priority = 1)
     public void loginWithInvalidPasswordTest() {
-        mainPage.logInFromMainPage("tomcruise", "12345");
+        mainPage.logInFromMainPage(Constants.credentials.USERNAME, Constants.credentials.INCORRECT_PASSWORD);
         mainPage.clickSignInButton();
-        WebElement element03;
-        element03 = driver.findElement(By.xpath("//div[contains(text(),'Невірний логін або пароль')]"));
-        Assert.assertEquals(element03.getText(), "Невірний логін або пароль");
-        driver.navigate().back();
+        WebElement element01 = driver.findElement(By.xpath("//div[contains(text(),'Невірний логін або пароль')]"));
+        Assert.assertEquals(element01.getText(), Constants.text.EXPECTED_TEXT_3);
     }
 
     @AfterMethod

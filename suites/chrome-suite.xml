@@ -1,0 +1,23 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+<suite name="GoogleChromeSuite">
+    <parameter name="browserType" value="chrome"/>
+
+    <test name="I.UA Main Page Test, contains 8 tests">
+        <classes>
+            <class name="MainPageTest"/>
+        </classes>
+    </test>
+
+    <test name="I.UA Login Page Test, contains 5 tests">
+        <classes>
+            <class name="LoginPageTest"/>
+        </classes>
+    </test>
+
+    <test name="I.UA User Personal Page, contains 6 tests">
+        <classes>
+            <class name="NewEmailPageTest"/>
+        </classes>
+    </test>
+
+</suite>

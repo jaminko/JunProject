@@ -18,35 +18,37 @@ public class NewEmailPage {
     private By saveInDraftsButton = By.xpath("//*[@name='save_in_drafts' and contains (@value, 'Зберегти чернетку')]");
     private By CancelButton = By.xpath("//*[@value='Скасувати']");
 
-    public NewEmailPage fillRecipientField (String email) {
+    public NewEmailPage fillRecipientField(String email) {
         driver.findElement(recipientField).sendKeys(email);
         return this;
     }
 
-    public NewEmailPage fillThemeField (String theme) {
+    public NewEmailPage fillThemeField(String theme) {
         driver.findElement(themeField).sendKeys(theme);
         return this;
     }
 
-    public NewEmailPage fillBodyField (String body) {
+    public NewEmailPage fillBodyField(String body) {
         driver.findElement(bodyField).sendKeys(body);
         return this;
     }
 
-    public NewEmailPage clickOnSendButton () {
+    public NewEmailPage clickOnSendButton() {
         WebElement element01 = driver.findElement(sendButton);
         Actions builder1 = new Actions(driver);
         builder1.doubleClick(element01).sendKeys(Keys.ENTER).sendKeys(Keys.ENTER).build().perform();
         return this;
     }
 
-    public NewEmailPage clickOnSaveInDraftsButton () {
+    public NewEmailPage clickOnSaveInDraftsButton() {
         driver.findElement(saveInDraftsButton).click();
         return this;
     }
 
-    public NewEmailPage clickOnCancelButton () {
-        driver.findElement(CancelButton).click();
+    public NewEmailPage clickOnCancelButton() {
+        WebElement element02 = driver.findElement(CancelButton);
+        Actions builder2 = new Actions(driver);
+        builder2.moveToElement(element02).click().build().perform();
         return this;
     }
 }
